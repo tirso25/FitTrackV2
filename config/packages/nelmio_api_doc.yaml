@@ -1,0 +1,30 @@
+# config/packages/nelmio_api_doc.yaml
+nelmio_api_doc:
+  documentation:
+    info:
+      title: "FITTRACK API REST"
+      description: "API documentation for FITTRACK application"
+      version: "1.0.0"
+    components:
+      securitySchemes:
+        bearerAuth:
+          type: http
+          scheme: bearer
+          bearerFormat: JWT
+    servers:
+      - url: 'http://localhost:3000'
+        description: 'Local development server (Node.js/React)'
+      - url: 'http://127.0.0.7:5500'
+        description: 'Local development server (Live Server)'
+      - url: 'http://localhost:5173'
+        description: 'Local development server (Vite)'
+      - url: 'https://fittrackapp.vercel.app'
+        description: 'Production server (Vercel)'
+  areas:
+    default:
+      path_patterns: 
+        - ^/api(?!/doc$)
+      host_patterns: 
+        - ^.*$
+  models:
+    use_jms: false
