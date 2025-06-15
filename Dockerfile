@@ -94,8 +94,8 @@ RUN mkdir -p var/cache var/log && \
 RUN echo "APP_ENV=prod" > .env && \
     echo "APP_DEBUG=false" >> .env && \
     echo "DATABASE_URL=${DATABASE_URL}" >> .env && \
-    echo "JWT_SECRET_KEY=%kernel.project_dir%/config/jwt/private.pem" >> .env && \
-    echo "JWT_PUBLIC_KEY=%kernel.project_dir%/config/jwt/public.pem" >> .env && \
+    echo "JWT_SECRET_KEY=${JWT_SECRET_KEY}" >> .env && \
+    echo "JWT_PUBLIC_KEY=${JWT_PUBLIC_KEY}" >> .env && \
     echo "JWT_PASSPHRASE=${JWT_PASSPHRASE}" >> .env && \
     echo "MESSENGER_TRANSPORT_DSN=doctrine://default?auto_setup=0" >> .env && \
     echo "MAILER_DSN=${MAILER_DSN}" >> .env
