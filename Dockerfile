@@ -91,6 +91,7 @@ RUN mkdir -p var/cache var/log && \
 # - URL de la base de datos (DATABASE_URL)
 # - Claves JWT necesarias para la autenticación
 # - Claves MAILER_DSN necesarias para el envio de correos
+# - Configuración de Mercure para WebSockets en tiempo real
 RUN echo "APP_ENV=prod" > .env && \
     echo "APP_DEBUG=false" >> .env && \
     echo "DATABASE_URL=${DATABASE_URL}" >> .env && \
@@ -98,7 +99,10 @@ RUN echo "APP_ENV=prod" > .env && \
     echo "JWT_PUBLIC_KEY=${JWT_PUBLIC_KEY}" >> .env && \
     echo "JWT_PASSPHRASE=${JWT_PASSPHRASE}" >> .env && \
     echo "MESSENGER_TRANSPORT_DSN=doctrine://default?auto_setup=0" >> .env && \
-    echo "MAILER_DSN=${MAILER_DSN}" >> .env
+    echo "MAILER_DSN=${MAILER_DSN}" >> .env && \
+    echo "MERCURE_URL=${MERCURE_URL}" >> .env && \
+    echo "MERCURE_PUBLIC_URL=${MERCURE_PUBLIC_URL}" >> .env && \
+    echo "MERCURE_JWT_SECRET=${MERCURE_JWT_SECRET}" >> .env
 
 # Generar las claves JWT si no existen.
 # Si las claves privadas y públicas no están presentes en el contenedor, se crean usando OpenSSL.

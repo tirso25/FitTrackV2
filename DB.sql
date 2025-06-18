@@ -10,7 +10,23 @@ CREATE TABLE
     `active` tinyint NOT NULL DEFAULT '1',
     PRIMARY KEY (`role_id`),
     UNIQUE KEY `name` (`name`)
-  )
+  );
+
+CREATE TABLE
+  `categories` (
+    `category_id` int NOT NULL AUTO_INCREMENT,
+    `name` varchar(50) NOT NULL,
+    `active` tinyint NOT NULL DEFAULT '1',
+    PRIMARY KEY (`category_id`),
+    UNIQUE KEY `name` (`name`)
+  );
+
+CREATE TABLE
+  `chat_type` (
+    `chatType_id` int NOT NULL AUTO_INCREMENT,
+    `type` tinyint NOT NULL,
+    PRIMARY KEY (`chatType_id`)
+  );
 
 CREATE TABLE
   `users` (
@@ -30,23 +46,7 @@ CREATE TABLE
     UNIQUE KEY `idx_users_username_unique` (`username`),
     KEY `fk_users_role` (`role`),
     CONSTRAINT `fk_users_role` FOREIGN KEY (`role`) REFERENCES `roles` (`role_id`) ON DELETE RESTRICT ON UPDATE CASCADE
-  )
-
-CREATE TABLE
-  `categories` (
-    `category_id` int NOT NULL AUTO_INCREMENT,
-    `name` varchar(50) NOT NULL,
-    `active` tinyint NOT NULL DEFAULT '1',
-    PRIMARY KEY (`category_id`),
-    UNIQUE KEY `name` (`name`)
-  )
-
-CREATE TABLE
-  `chat_type` (
-    `chatType_id` int NOT NULL AUTO_INCREMENT,
-    `type` tinyint NOT NULL,
-    PRIMARY KEY (`chatType_id`)
-  )
+  );
 
 CREATE TABLE
   `chats` (
@@ -56,7 +56,7 @@ CREATE TABLE
     PRIMARY KEY (`chat_id`),
     KEY `fk_chat_type` (`type_id`),
     CONSTRAINT `fk_chat_type` FOREIGN KEY (`type_id`) REFERENCES `chat_type` (`chatType_id`) ON DELETE RESTRICT ON UPDATE CASCADE
-  )
+  );
 
 CREATE TABLE
   `chat_users` (
@@ -68,7 +68,7 @@ CREATE TABLE
     KEY `fk_chatUsers_users` (`user_id`),
     CONSTRAINT `fk_chatUsers_chat` FOREIGN KEY (`chat_id`) REFERENCES `chats` (`chat_id`) ON DELETE RESTRICT ON UPDATE CASCADE,
     CONSTRAINT `fk_chatUsers_users` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE RESTRICT ON UPDATE CASCADE
-  )
+  );
 
 CREATE TABLE
   `messages` (
@@ -82,7 +82,7 @@ CREATE TABLE
     KEY `fk_user` (`user_id`),
     CONSTRAINT `fk_chat` FOREIGN KEY (`chat_id`) REFERENCES `chats` (`chat_id`) ON DELETE RESTRICT ON UPDATE CASCADE,
     CONSTRAINT `fk_user` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE RESTRICT ON UPDATE CASCADE
-  )
+  );
 
 CREATE TABLE
   `exercises` (
@@ -99,7 +99,7 @@ CREATE TABLE
     KEY `fk_users_exercise` (`user_id`),
     CONSTRAINT `fk_exercises_category` FOREIGN KEY (`category`) REFERENCES `categories` (`category_id`),
     CONSTRAINT `fk_users_exercise` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`)
-  )
+  );
 
 CREATE TABLE
   `groups` (
@@ -115,7 +115,7 @@ CREATE TABLE
     KEY `FK_USERS_GROUPS` (`user_id`),
     CONSTRAINT `FK_CATEGORY` FOREIGN KEY (`category`) REFERENCES `categories` (`category_id`),
     CONSTRAINT `FK_USERS_GROUPS` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`)
-  )
+  );
 
 CREATE TABLE
   `exercise_groups` (
@@ -127,18 +127,20 @@ CREATE TABLE
     KEY `idx_exercise_group_id_group` (`group_id`),
     CONSTRAINT `fk_exercise_group_id_exe` FOREIGN KEY (`exercise_id`) REFERENCES `exercises` (`exercise_id`) ON DELETE RESTRICT ON UPDATE CASCADE,
     CONSTRAINT `fk_exercise_group_id_group` FOREIGN KEY (`group_id`) REFERENCES `groups` (`group_id`) ON DELETE RESTRICT ON UPDATE CASCADE
-  )
+  );
 
 CREATE TABLE
-  `likes_coachs` (
-    `coachLike_id` int NOT NULL AUTO_INCREMENT,
-    `coach_id` int NOT NULL,
-    `likes` int NOT NULL DEFAULT '0',
-    `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    PRIMARY KEY (`coachLike_id`),
-    KEY `likes_exercises_V2` (`coach_id`),
-    CONSTRAINT `likes_coachs` FOREIGN KEY (`coach_id`) REFERENCES `users` (`user_id`)
-  )
+  "favorites_coachs" (
+    "coachesFavorites_id" int NOT NULL AUTO_INCREMENT,
+    "coach_id" int NOT NULL,
+    "user_id" int NOT NULL,
+    "active" tinyint NOT NULL DEFAULT '1',
+    PRIMARY KEY ("coachesFavorites_id"),
+    KEY "favorite_coach_user" ("user_id"),
+    KEY "favorite_coach_coach" ("coach_id"),
+    CONSTRAINT "favorite_coach_coach" FOREIGN KEY ("coach_id") REFERENCES "users" ("user_id") ON DELETE RESTRICT ON UPDATE CASCADE,
+    CONSTRAINT "favorite_coach_user" FOREIGN KEY ("user_id") REFERENCES "users" ("user_id") ON DELETE RESTRICT ON UPDATE CASCADE
+  );
 
 CREATE TABLE
   `favorites_exercises` (
@@ -151,7 +153,7 @@ CREATE TABLE
     KEY `idx_favorite_exercises_id_usr` (`user_id`),
     CONSTRAINT `fk_favorite_exercises_id_exe_v2` FOREIGN KEY (`exercise_id`) REFERENCES `exercises` (`exercise_id`) ON DELETE CASCADE ON UPDATE CASCADE,
     CONSTRAINT `fk_favorite_exercises_id_usr` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE RESTRICT ON UPDATE CASCADE
-  )
+  );
 
 CREATE TABLE
   `favorites_groups` (
@@ -165,7 +167,7 @@ CREATE TABLE
     KEY `idx_favorite_exercises_id_usr` (`user_id`),
     CONSTRAINT `favorite_group_user` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE RESTRICT ON UPDATE CASCADE,
     CONSTRAINT `favorite_groups_groups` FOREIGN KEY (`group_id`) REFERENCES `groups` (`group_id`) ON DELETE RESTRICT ON UPDATE CASCADE
-  )
+  );
 
 CREATE TABLE
   `likes_coachs` (
@@ -176,7 +178,7 @@ CREATE TABLE
     PRIMARY KEY (`coachLike_id`),
     KEY `likes_exercises_V2` (`coach_id`),
     CONSTRAINT `likes_coachs` FOREIGN KEY (`coach_id`) REFERENCES `users` (`user_id`)
-  )
+  );
 
 CREATE TABLE
   `likes_exercises` (
@@ -187,7 +189,7 @@ CREATE TABLE
     PRIMARY KEY (`exerciseLike_id`),
     KEY `likes_exercises_V2` (`exercise_id`),
     CONSTRAINT `likes_exercises_V2` FOREIGN KEY (`exercise_id`) REFERENCES `exercises` (`exercise_id`) ON DELETE CASCADE ON UPDATE CASCADE
-  )
+  );
 
 CREATE TABLE
   `likes_groups` (
@@ -197,7 +199,7 @@ CREATE TABLE
     PRIMARY KEY (`groupsLike_id`),
     KEY `fk_groups_likes` (`group_id`),
     CONSTRAINT `fk_groups_likes` FOREIGN KEY (`group_id`) REFERENCES `groups` (`group_id`) ON DELETE RESTRICT ON UPDATE CASCADE
-  )
+  );
 
 COMMIT;
 
@@ -209,7 +211,7 @@ INSERT INTO roles (name) VALUES
 
 INSERT INTO users (email, username, password, role, status, public) VALUES
   ('root@gmail.com', 'root', 'r00T123+', 1, 'active', 0),
-  ('admin@gmail.com', 'admin', '4dmiN123+', 2, 'active', 0).
+  ('admin@gmail.com', 'admin', '4dmiN123+', 2, 'active', 0),
   ('coach@gmail.com', 'coach', 'C0ach123+', 3, 'active', 1);
 
 INSERT INTO categories (name) VALUES
@@ -221,7 +223,17 @@ INSERT INTO categories (name) VALUES
   ('ABDOMINALS'),
   ('FEMORAL'),
   ('QUADRICEPS'),
-  ('CALVES')
+  ('CALVES'),
+  ('GLUTES'),
+  ('CARDIO'),
+  ('FULL BODY'),
+  ('TRAPEZIUS'),
+  ('FOREARMS'),
+  ('OBLIQUES'),
+  ('LOWER BACK'),
+  ('NECK'),
+  ('HAMSTRINGS'),
+  ('HIP FLEXORS');
 
 --EJERCICIOS
 
