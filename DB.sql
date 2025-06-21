@@ -235,7 +235,7 @@ INSERT INTO categories (name) VALUES
   ('HAMSTRINGS'),
   ('HIP FLEXORS');
 
---EJERCICIOS
+-- EJERCICIOS
 
 -- 1. Inicializar contador de likes cuando se crea un ejercicio
 CREATE TRIGGER trg_initialize_likes_counter
@@ -379,7 +379,7 @@ BEGIN
     END IF;
 END;
 
---ENTRENADORES
+-- ENTRENADORES
 
 -- 1. CREAR REGISTRO EN LIKES_COACHS CUANDO UN USUARIO SE CONVIERTE EN ENTRENADOR
 CREATE TRIGGER trg_create_likes_coach_on_role_change
