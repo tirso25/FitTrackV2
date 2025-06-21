@@ -1660,7 +1660,7 @@ class UsersController extends AbstractController
                 ->to($email)
                 ->subject('Welcome to FitTrack')
                 ->html(
-                '<html>
+                '<html lang="es">
                     <body style="font-family: Arial, sans-serif; background-color: #f0fff0; margin: 0; padding: 0;">
                         <table width="100%" cellpadding="0" cellspacing="0" style="max-width: 600px; margin: auto; background-color: #ffffff; padding: 20px; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.05);">
                             <tr>
